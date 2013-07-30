@@ -25,9 +25,10 @@ function! s:unite_source.gather_candidates(args, context)
   endif
   let l:tcnt = 1
   for s:tline in getbufline('%', 1, '$')
-    if s:tline =~ l:regexp
+    let l:res = matchlist(s:tline, l:regexp)
+    if !empty(l:res)
       call extend(l:candidates, [{
-            \ "word": s:tline,
+            \ "word": l:tcnt . ' ' . l:res[1] . ': ' . s:tline,
             \ "source": "tasklist",
             \ "kind": "jump_list",
             \ "action__path": l:tpath,
